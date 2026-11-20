@@ -37,6 +37,13 @@ h1{font-size:1.7rem;margin:0}
 .k .n{font-size:2rem;font-weight:700;color:var(--ac)}
 .k .l{color:var(--mu);font-size:.9rem}
 .n .u{font-size:.9rem;font-weight:500;color:var(--mu);margin-inline-start:8px}
+.kc{position:relative;cursor:grab;user-select:none;-webkit-user-select:none;transition:border-color .15s,box-shadow .15s,opacity .15s}
+.kc::after{content:"\283F";position:absolute;bottom:8px;left:12px;color:var(--mu);opacity:.45;font-size:.95rem}
+.kc:hover{border-color:var(--ac);box-shadow:0 4px 18px rgba(31,111,235,.14)}
+.kc:active{cursor:grabbing}
+.kc.dg{opacity:.45;border-style:dashed;border-color:var(--ac)}
+.op2{position:absolute;top:10px;left:12px;padding:3px 10px;font-size:.72rem}
+.kc:hover .op2{background:var(--ac);color:#fff;border-color:var(--ac)}
 .g{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:16px;margin-bottom:20px}
 h2{font-size:1.1rem;margin:0 0 14px}
 .r{display:grid;grid-template-columns:90px 1fr 28px;gap:10px;align-items:center;margin:9px 0;font-size:.95rem}
@@ -121,6 +128,8 @@ body.lk #lg0{display:flex}
 <p class="sub">تحليل الأفواج والمؤسسات والتخصصات حسب المديرية</p>
 
 <div class="k" id="k"></div>
+<dialog id="dM" aria-labelledby="tM"><div class="mh"><h2 id="tM">عدد المديريات</h2><button type="button" class="x" data-x aria-label="إغلاق">✕</button></div><div class="mb" id="lM"></div></dialog>
+<dialog id="dS" aria-labelledby="tS"><div class="mh"><h2 id="tS">عدد المؤسسات</h2><button type="button" class="x" data-x aria-label="إغلاق">✕</button></div><div class="mb" id="lS"></div></dialog>
 <div class="c" id="pr" style="margin-bottom:20px"></div>
 
 <div class="g">
@@ -177,7 +186,7 @@ var inst=codes.filter(function(c){return ins[c].n.indexOf("المعهد")===0}).
 var cen=codes.length-inst;
 var act=order.filter(function(w){return wil[w]>0}).length;
 var K=[[tot,"إجمالي الأفواج"],[order.length,"عدد المديريات"],[act,"مديريات بها أفواج"],[codes.length,"عدد المؤسسات"],[sp,"سطور بتخصص محدد"]];
-$("k").innerHTML=K.map(function(a){return '<div class="c"><div class="n">'+a[0]+'</div><div class="l">'+a[1]+'</div></div>'}).join("");
+$("k").innerHTML=K.map(function(a,i){return '<div class="c kc" data-k="'+i+'" data-o="'+(i==1?"dM":i==3?"dS":"")+'" title="اسحب لتغيير الترتيب"><div class="n">'+a[0]+'</div><div class="l">'+a[1]+'</div>'+(i==1||i==3?'<span class="op op2" aria-hidden="true">فتح <b>⤢</b></span>':'')+'</div>'}).join("");
 
 function bars(el,rows,cls,max){
   $(el).innerHTML=rows.map(function(a){return '<div class="r"><span>'+a[0]+'</span><div class="b '+cls+'"><i style="width:'+(max?a[1]/max*100:0)+'%"></i></div><span>'+a[1]+'</span></div>'}).join("");
@@ -202,6 +211,29 @@ $("ft1").textContent=T;
 H='<div class="fs">الإجمالي: <b>'+T+'</b> أجنبي · <b>'+TE+'</b> إناث</div>';
 order.forEach(function(w){var o=W[w],k=Object.keys(o.i);H+='<div class="fw"><div class="fh"><b>'+w+'</b><span>'+o.f+' أجنبي · '+(o.e||0)+' إناث</span></div>'+(k.length?k.map(function(c){var n=o.i[c];return '<div class="fr"><span>'+n.n+' ('+c+')</span><span>'+n.g+' فوج · '+n.f+' أجنبي · '+n.e+' إناث</span></div>'}).join(""):'<div class="fr z"><span>لا توجد مؤسسة مسجلة</span></div>')+'</div>'});
 $("fd").innerHTML=H})();
+(function(){var k=$("k"),key="ko2",d=null;
+function save(){try{localStorage.setItem(key,JSON.stringify([].map.call(k.children,function(c){return c.dataset.k})))}catch(e){}}
+var o=[];try{o=JSON.parse(localStorage.getItem(key)||"[]")}catch(e){}if(!o.length)o=["1","3","0","4","2"];o.forEach(function(i){var c=k.querySelector('[data-k="'+i+'"]');if(c)k.appendChild(c)});
+k.addEventListener("dragstart",function(e){var c=e.target.closest&&e.target.closest(".kc");if(!c)return;d=c;c.classList.add("dg");e.dataTransfer.effectAllowed="move";try{e.dataTransfer.setData("text/plain",c.dataset.k)}catch(x){}});
+k.addEventListener("dragover",function(e){if(!d)return;e.preventDefault();var t=e.target.closest&&e.target.closest(".kc");if(!t||t===d)return;var a=[].indexOf.call(k.children,d),b=[].indexOf.call(k.children,t);if(a<b)k.insertBefore(d,t.nextSibling);else k.insertBefore(d,t)});
+k.addEventListener("drop",function(e){e.preventDefault()});
+k.addEventListener("click",function(e){var c=e.target.closest&&e.target.closest(".kc");if(c&&c.dataset.o)$(c.dataset.o).showModal()});
+k.addEventListener("dragend",function(){if(d)d.classList.remove("dg");d=null;save()});
+})();
+(function(){var k=$("k"),d=null,sx,sy,gx,gy,mv=false,sup=false;
+function save(){try{localStorage.setItem("ko2",JSON.stringify([].map.call(k.children,function(c){return c.dataset.k})))}catch(e){}}
+function place(x,y){d.style.transform="none";var r=d.getBoundingClientRect();d.style.transform="translate("+(x-gx-r.left)+"px,"+(y-gy-r.top)+"px)"}
+k.addEventListener("mousedown",function(e){if(e.target.closest&&e.target.closest(".kc"))e.preventDefault()});
+k.addEventListener("pointerdown",function(e){if(e.pointerType!=="mouse"||e.button)return;var c=e.target.closest(".kc");if(!c)return;d=c;sx=e.clientX;sy=e.clientY;var r=c.getBoundingClientRect();gx=sx-r.left;gy=sy-r.top;mv=false});
+document.addEventListener("pointermove",function(e){if(!d)return;if(!mv){if(Math.abs(e.clientX-sx)+Math.abs(e.clientY-sy)<6)return;mv=true;d.classList.add("dg");d.style.pointerEvents="none";d.style.zIndex=30;d.style.transition="none"}
+place(e.clientX,e.clientY);var t=document.elementFromPoint(e.clientX,e.clientY),c=t&&t.closest&&t.closest(".kc");
+if(c&&c!==d&&c.parentNode===k){var a=[].indexOf.call(k.children,d),b=[].indexOf.call(k.children,c);if(a<b)k.insertBefore(d,c.nextSibling);else k.insertBefore(d,c);place(e.clientX,e.clientY)}});
+document.addEventListener("pointerup",function(){if(!d)return;if(mv){d.classList.remove("dg");d.style.cssText="";save();sup=true;setTimeout(function(){sup=false},0)}d=null});
+k.addEventListener("click",function(e){if(sup){e.stopPropagation();e.preventDefault()}},true);
+})();
+(function(){var m={},s={};D.forEach(function(r){var w=m[r[1]]=m[r[1]]||{n:r[0],i:{},g:0};if(r[4])w.g++;if(r[2]){w.i[r[2]]=1;if(!s[r[2]])s[r[2]]={n:r[3],w:r[1],g:0};if(r[4])s[r[2]].g++}});
+$("lM").innerHTML=order.map(function(w){var o=m[w];return '<div class="fr"><span><b>'+o.n+' · '+w+'</b></span><span>'+Object.keys(o.i).length+' مؤسسة · '+o.g+' فوج</span></div>'}).join("");
+$("lS").innerHTML=Object.keys(s).map(function(c){var o=s[c];return '<div class="fr"><span><b>'+o.n+'</b></span><span>'+c+' · '+o.w+' · '+o.g+' فوج</span></div>'}).join("")})();
 (function(){var h=document.documentElement,b=$("th"),i=$("ti"),k="th1",s=null;
 function cur(){var a=h.getAttribute("data-theme");if(a)return a;return matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"}
 function ap(m){h.setAttribute("data-theme",m);i.textContent=m==="dark"?"☀︎":"☾";b.title=m==="dark"?"الوضع الفاتح":"الوضع المظلم"}
