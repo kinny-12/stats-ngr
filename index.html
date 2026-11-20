@@ -166,6 +166,7 @@ body.lk #lg0{display:flex}
 <div class="ln" aria-hidden="true"></div>
 <dialog id="dM" aria-labelledby="tM"><div class="mh"><h2 id="tM">عدد الولايات</h2><button type="button" class="x" data-x aria-label="إغلاق">✕</button></div><div class="mb" id="lM"></div></dialog>
 <dialog id="dS" aria-labelledby="tS"><div class="mh"><h2 id="tS">عدد المؤسسات</h2><button type="button" class="x" data-x aria-label="إغلاق">✕</button></div><div class="mb" id="lS"></div></dialog>
+<dialog id="dSp" aria-labelledby="tSp"><div class="mh"><h2 id="tSp">عدد التخصصات</h2><button type="button" class="x" data-x aria-label="إغلاق">✕</button></div><div class="mb" id="lSp"></div></dialog>
 <div class="c" id="pr" style="margin-bottom:20px"></div>
 
 <div class="g">
@@ -224,8 +225,9 @@ var codes=Object.keys(ins);
 var inst=codes.filter(function(c){return ins[c].n.indexOf("المعهد")===0}).length;
 var cen=codes.length-inst;
 var act=order.filter(function(w){return wil[w]>0}).length;
-var K=[[order.length,"عدد الولايات"],[codes.length,"عدد المؤسسات"],[tot,"إجمالي الأفواج"],[ft,"العدد الكلي للأجانب",fe]];
-$("k").innerHTML=K.map(function(a,i){var o=i==0?"dM":i==1?"dS":"";return '<div class="c kc"'+(o?' data-o="'+o+'" role="button" tabindex="0"':'')+'><div class="n">'+a[0]+'</div><div class="l">'+a[1]+'</div>'+(a[2]!==undefined?'<div class="l" style="margin-top:8px;display:flex;align-items:baseline;gap:6px;flex-wrap:wrap">منهم إناث <b style="color:var(--ac2);font-size:1.15rem">'+a[2]+'</b><span>('+(a[0]?Math.round(a[2]/a[0]*100):0)+'%)</span></div>':'')+(o?'<span class="op op2" aria-hidden="true">فتح <b>⤢</b></span>':'')+'</div>'}).join("");
+var spk={};D.forEach(function(r){if(r[4])spk[r[4].replace(/\s+/g,"")]=1});var nsp=Object.keys(spk).length;
+var K=[[order.length,"عدد الولايات"],[codes.length,"عدد المؤسسات"],[nsp,"عدد التخصصات"],[tot,"إجمالي الأفواج"],[ft,"العدد الكلي للأجانب",fe]];
+$("k").innerHTML=K.map(function(a,i){var o=i==0?"dM":i==1?"dS":i==2?"dSp":"";return '<div class="c kc"'+(o?' data-o="'+o+'" role="button" tabindex="0"':'')+'><div class="n">'+a[0]+'</div><div class="l">'+a[1]+'</div>'+(a[2]!==undefined?'<div class="l" style="margin-top:8px;display:flex;align-items:baseline;gap:6px;flex-wrap:wrap">منهم إناث <b style="color:var(--ac2);font-size:1.15rem">'+a[2]+'</b><span>('+(a[0]?Math.round(a[2]/a[0]*100):0)+'%)</span></div>':'')+(o?'<span class="op op2" aria-hidden="true">فتح <b>⤢</b></span>':'')+'</div>'}).join("");
 
 function bars(el,rows,cls,max){
   $(el).innerHTML=rows.map(function(a){return '<div class="r"><span>'+a[0]+'</span><div class="b '+cls+'"><i style="width:'+(max?a[1]/max*100:0)+'%"></i></div><span>'+a[1]+'</span></div>'}).join("");
@@ -298,6 +300,14 @@ try{if(sessionStorage.getItem("ok1")===H)ok()}catch(e){}
 function hx(s){var b=new TextEncoder().encode(s);return crypto.subtle.digest("SHA-256",b).then(function(d){return Array.prototype.map.call(new Uint8Array(d),function(x){return ("0"+x.toString(16)).slice(-2)}).join("")})}
 function chk(){hx($("pw").value).then(function(h){if(h===H)ok();else{$("er").textContent="كلمة المرور غير صحيحة";$("pw").value=""}})}
 $("go").onclick=chk;$("pw").onkeydown=function(e){if(e.key==="Enter")chk()};
+})();
+(function(){
+var m={},ks=[];
+D.forEach(function(r){if(!r[4])return;var k=r[4].replace(/\s+/g,""),o=m[k];if(!o){o=m[k]={n:r[4],f:0,rows:[]};ks.push(k)}o.f+=+r[6]||0;o.rows.push(r)});
+function sh(t){return t.replace("المعهد الوطني المتخصص في التكوين المهني","معهد").replace("مركز التكوين المهني والتمهين","مركز")}
+$("lSp").innerHTML='<p class="note" style="margin:0 0 8px">'+ks.length+' تخصصاً</p>'+ks.map(function(k){var o=m[k];
+  return '<div class="si"><div class="fr"><span><b>'+o.n+'</b></span><span>'+o.f+' أجنبي · <button type="button" class="gb" aria-expanded="false">'+o.rows.length+' فوج</button></span></div><div class="sb" hidden>'+o.rows.map(function(r){return '<div class="fr"><span>'+sh(r[3])+' ('+r[2]+') · '+r[1]+'</span><span>الفوج '+r[5]+' · '+(+r[6]||0)+' أجنبي</span></div>'}).join("")+'</div></div>'}).join("");
+$("lSp").addEventListener("click",function(e){var b=e.target.closest&&e.target.closest(".gb");if(!b)return;var p=b.closest(".si").querySelector(".sb"),o=p.hidden;p.hidden=!o;b.setAttribute("aria-expanded",o)});
 })();
 (function(){
 var b=$("xl"),st=$("xs"),dl=null;
