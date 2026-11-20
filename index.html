@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="ar" dir="rtl" data-theme="dark">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -8,7 +8,7 @@
 <style>
 :root{--bg:#f4f6fa;--card:#fff;--tx:#1b2433;--mu:#6b7686;--ac:#1f6feb;--ac2:#12a37f;--bd:#e3e8ef;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
 @media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0e131b;--card:#171e29;--tx:#e8edf5;--mu:#93a0b3;--ac:#5b9dff;--ac2:#3fd0a8;--bd:#263040}}
-:root[data-theme="dark"]{--bg:#0e131b;--card:#171e29;--tx:#e8edf5;--mu:#93a0b3;--ac:#5b9dff;--ac2:#3fd0a8;--bd:#263040}
+:root[data-theme="dark"]{color-scheme:dark;--bg:#0e131b;--card:#171e29;--tx:#e8edf5;--mu:#93a0b3;--ac:#5b9dff;--ac2:#3fd0a8;--bd:#263040}
 *{box-sizing:border-box}
 html{scroll-padding-top:env(safe-area-inset-top,0px)}
 body{margin:0;background:var(--bg);color:var(--tx);font-family:Tajawal,"Segoe UI",Tahoma,Arial,sans-serif;line-height:1.6}
@@ -60,7 +60,8 @@ h2{font-size:1.1rem;margin:0 0 14px}
 .gb::after{content:" \25BE"}.gb[aria-expanded="true"]::after{content:" \25B4"}
 .sb{padding:2px 18px 8px 0;border-right:2px solid var(--bd);margin:0 6px 8px 0}.sb[hidden]{display:none}
 .sb .fr{border-bottom:0;padding:4px 0}
-.ov{margin:14px 0 6px}.ovh{display:flex;align-items:baseline;gap:12px;margin-bottom:8px}.ovh span{font-weight:700}.ovh strong{font-size:1.5rem;color:var(--ac2)}.ovh em{color:var(--mu);font-style:normal;font-size:.9rem;margin-inline-start:auto}
+.ov{margin:14px 0 6px}
+.sec{display:flex;align-items:center;gap:10px;margin:0 0 12px}.sec::before{content:"";width:4px;height:1.1em;border-radius:2px;background:var(--ac)}.ovh{display:flex;align-items:baseline;gap:12px;margin-bottom:8px}.ovh span{font-weight:700}.ovh strong{font-size:1.5rem;color:var(--ac2)}.ovh em{color:var(--mu);font-style:normal;font-size:.9rem;margin-inline-start:auto}
 .b{height:14px;background:var(--bd);border-radius:7px;overflow:hidden}
 .b i{display:block;height:100%;background:var(--ac);border-radius:7px}
 .b.t i{background:var(--ac2)}
@@ -111,8 +112,6 @@ body.lk .w{display:none}
 .fr{display:flex;justify-content:space-between;flex-wrap:wrap;gap:4px 12px;padding:7px 0;border-bottom:1px dashed var(--bd);font-size:.88rem}
 .fr span:last-child{color:var(--mu);white-space:nowrap}
 .fsec{margin:20px 0 10px;font-size:1rem;padding-top:14px;border-top:1px solid var(--bd)}
-.th{position:fixed;top:calc(12px + env(safe-area-inset-top,0px));left:14px;z-index:50;width:42px;height:42px;border-radius:50%;border:1px solid var(--bd);background:var(--card);color:var(--ac);font-size:1.2rem;line-height:1;cursor:pointer;display:grid;place-items:center;box-shadow:0 4px 14px rgba(0,0,0,.14);transition:transform .15s,border-color .15s}
-.th:hover{transform:scale(1.08);border-color:var(--ac)}
 .op{flex:none;display:inline-flex;align-items:center;gap:6px;padding:5px 14px;border-radius:999px;background:var(--bg);border:1px solid var(--bd);color:var(--ac);font-size:.8rem;font-weight:500;transition:background .15s,color .15s,border-color .15s}
 .tile:hover .op{background:var(--ac);color:#fff;border-color:var(--ac)}
 .c:has(.tile){transition:border-color .15s,box-shadow .15s}.c:has(.tile):hover{border-color:var(--ac);box-shadow:0 4px 18px rgba(31,111,235,.12)}
@@ -135,12 +134,12 @@ body.lk #lg0{display:flex}
 </style>
 </head>
 <body class="lk">
-<button type="button" id="th" class="th" aria-label="تبديل الوضع المظلم" title="الوضع المظلم"><span id="ti">☾</span></button>
 <div id="lg0"><div class="c"><div style="font-size:2rem">🔒</div><h2 style="margin:6px 0 0">الولوج إلى اللوحة</h2><div class="sub" style="margin:4px 0 0">أدخل كلمة المرور</div><input type="password" id="pw" autocomplete="off" placeholder="••••••••"><button id="go" type="button">دخول</button><p id="er"></p></div></div>
 <div class="w">
 <h1>لوحة إحصائيات الأجانب بلد النيجر</h1>
 <p class="sub">تحليل الأفواج والمؤسسات والتخصصات حسب المديرية</p>
 
+<h2 class="sec">إحصائيات عامة</h2>
 <div class="k" id="k"></div>
 <dialog id="dM" aria-labelledby="tM"><div class="mh"><h2 id="tM">عدد المديريات</h2><button type="button" class="x" data-x aria-label="إغلاق">✕</button></div><div class="mb" id="lM"></div></dialog>
 <dialog id="dS" aria-labelledby="tS"><div class="mh"><h2 id="tS">عدد المؤسسات</h2><button type="button" class="x" data-x aria-label="إغلاق">✕</button></div><div class="mb" id="lS"></div></dialog>
@@ -227,16 +226,11 @@ order.forEach(function(w){var o=W[w],k=Object.keys(o.i);H+='<div class="fw"><div
 $("fd").innerHTML=H})();
 (function(){var k=$("k");function op(e){var c=e.target.closest&&e.target.closest(".kc[data-o]");if(c)$(c.dataset.o).showModal()}
 k.addEventListener("click",op);k.addEventListener("keydown",function(e){if(e.key==="Enter"||e.key===" "){e.preventDefault();op(e)}})})();
-(function(){var m={},s={};D.forEach(function(r){var w=m[r[1]]=m[r[1]]||{n:r[0],i:{},g:0};if(r[4])w.g++;if(r[2]){w.i[r[2]]=1;if(!s[r[2]])s[r[2]]={n:r[3],w:r[1],g:0,b:[]};if(r[4]){s[r[2]].g++;s[r[2]].b.push([r[4],r[5]])}}});
-$("lM").innerHTML=order.map(function(w){var o=m[w];return '<div class="fr"><span><b>'+o.n+' · '+w+'</b></span><span>'+Object.keys(o.i).length+' مؤسسة · '+o.g+' فوج</span></div>'}).join("");
+(function(){var m={},s={};D.forEach(function(r){var w=m[r[1]]=m[r[1]]||{n:r[0],i:{},g:0};if(r[4])w.g++;if(r[2]){(w.i[r[2]]=w.i[r[2]]||{n:r[3],g:0});if(r[4])w.i[r[2]].g++;if(!s[r[2]])s[r[2]]={n:r[3],w:r[1],g:0,b:[]};if(r[4]){s[r[2]].g++;s[r[2]].b.push([r[4],r[5]])}}});
+$("lM").innerHTML=order.map(function(w){var o=m[w],k=Object.keys(o.i);return '<div class="si"><div class="fr"><span><b>'+o.n+' · '+w+'</b></span><span>'+(k.length?'<button type="button" class="gb" aria-expanded="false">'+k.length+' مؤسسة</button>':'0 مؤسسة')+' · '+o.g+' فوج</span></div><div class="sb" hidden>'+k.map(function(c){var x=o.i[c];return '<div class="fr"><span>'+x.n+'</span><span>'+c+' · '+x.g+' فوج</span></div>'}).join("")+'</div></div>'}).join("");
+$("lM").addEventListener("click",function(e){var b=e.target.closest&&e.target.closest(".gb");if(!b)return;var p=b.closest(".si").querySelector(".sb"),o=p.hidden;p.hidden=!o;b.setAttribute("aria-expanded",o)});
 $("lS").innerHTML=Object.keys(s).map(function(c){var o=s[c];return '<div class="si"><div class="fr"><span><b>'+o.n+'</b></span><span>'+c+' · '+o.w+' · <button type="button" class="gb" aria-expanded="false">'+o.g+' فوج</button></span></div><div class="sb" hidden>'+o.b.map(function(x){return '<div class="fr"><span>'+x[0]+'</span><span>الفوج '+x[1]+'</span></div>'}).join("")+'</div></div>'}).join("");
 $("lS").addEventListener("click",function(e){var b=e.target.closest&&e.target.closest(".gb");if(!b)return;var p=b.closest(".si").querySelector(".sb"),o=p.hidden;p.hidden=!o;b.setAttribute("aria-expanded",o)})})();
-(function(){var h=document.documentElement,b=$("th"),i=$("ti"),k="th1",s=null;
-function cur(){var a=h.getAttribute("data-theme");if(a)return a;return matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"}
-function ap(m){h.setAttribute("data-theme",m);i.textContent=m==="dark"?"☀︎":"☾";b.title=m==="dark"?"الوضع الفاتح":"الوضع المظلم"}
-try{s=localStorage.getItem(k)}catch(e){}
-ap(s==="dark"||s==="light"?s:cur());
-b.onclick=function(){var m=cur()==="dark"?"light":"dark";ap(m);try{localStorage.setItem(k,m)}catch(e){}}})();
 (function(){if(!window.THREE)return;var T=THREE,b=$("bg"),rm=matchMedia("(prefers-reduced-motion:reduce)").matches,O=[],P6=6.2832;
 var R=new T.WebGLRenderer({alpha:true,antialias:true});R.setPixelRatio(Math.min(devicePixelRatio||1,2));b.appendChild(R.domElement);
 var S=new T.Scene(),C=new T.PerspectiveCamera(50,1,.1,100);C.position.z=18;
