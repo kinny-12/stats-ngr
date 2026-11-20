@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>لوحة إحصائيات الأجانب بلد النيجر</title>
 <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/exceljs/4.4.0/exceljs.min.js"></script>
 <style>
 :root{--bg:#f4f6fa;--card:#fff;--tx:#1b2433;--mu:#6b7686;--ac:#1f6feb;--ac2:#12a37f;--bd:#e3e8ef;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
 @media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0e131b;--card:#171e29;--tx:#e8edf5;--mu:#93a0b3;--ac:#5b9dff;--ac2:#3fd0a8;--bd:#263040}}
@@ -61,7 +62,8 @@ h2{font-size:1.1rem;margin:0 0 14px}
 .sb{padding:2px 18px 8px 0;border-right:2px solid var(--bd);margin:0 6px 8px 0}.sb[hidden]{display:none}
 .sb .fr{border-bottom:0;padding:4px 0}
 .ov{margin:14px 0 6px}
-.sec{display:flex;align-items:center;gap:10px;margin:0 0 12px}.sec::before{content:"";width:4px;height:1.1em;border-radius:2px;background:var(--ac)}.ovh{display:flex;align-items:baseline;gap:12px;margin-bottom:8px}.ovh span{font-weight:700}.ovh strong{font-size:1.5rem;color:var(--ac2)}.ovh em{color:var(--mu);font-style:normal;font-size:.9rem;margin-inline-start:auto}
+.sec{position:relative;display:flex;align-items:center;gap:10px;margin:0 0 18px;padding-bottom:12px;border-bottom:1px solid var(--bd)}
+.sec::after{content:"";position:absolute;inset-inline-start:0;bottom:-1px;width:84px;height:3px;border-radius:3px;background:linear-gradient(90deg,var(--ac),var(--ac2))}.sec::before{content:"";width:4px;height:1.1em;border-radius:2px;background:var(--ac)}.ovh{display:flex;align-items:baseline;gap:12px;margin-bottom:8px}.ovh span{font-weight:700}.ovh strong{font-size:1.5rem;color:var(--ac2)}.ovh em{color:var(--mu);font-style:normal;font-size:.9rem;margin-inline-start:auto}
 .b{height:14px;background:var(--bd);border-radius:7px;overflow:hidden}
 .b i{display:block;height:100%;background:var(--ac);border-radius:7px}
 .b.t i{background:var(--ac2)}
@@ -131,6 +133,10 @@ body.lk #lg0{display:flex}
 #lg0 button{font:inherit;width:100%;padding:10px;border:0;border-radius:10px;background:var(--ac);color:#fff;font-weight:700;cursor:pointer}
 #er{color:#d9534f;font-size:.9rem;min-height:1.4em;margin:8px 0 0}
 .note{color:var(--mu);font-size:.85rem;margin-top:12px}
+.xl{font:inherit;font-weight:700;padding:9px 18px;border:0;border-radius:10px;background:var(--ac2);color:#06281f;cursor:pointer;margin-bottom:6px}
+.xl[hidden]{display:none}.xl:disabled{opacity:.6;cursor:wait}
+.xl:focus-visible{outline:2px solid var(--ac);outline-offset:3px}
+#xs{margin:4px 0 12px;min-height:1.2em}
 </style>
 </head>
 <body class="lk">
@@ -146,7 +152,7 @@ body.lk #lg0{display:flex}
 <div class="c" id="pr" style="margin-bottom:20px"></div>
 
 <div class="g">
-  <div class="c"><button type="button" class="tile" data-d="dK"><h2>العدد الكلي</h2><span class="tot"><small>إجمالي الأجانب</small><b id="ft1">0</b></span><span class="op" aria-hidden="true">فتح <b>⤢</b></span></button><dialog id="dK" aria-labelledby="tK"><div class="mh"><h2 id="tK">العدد الكلي</h2><button type="button" class="x" data-x aria-label="إغلاق">✕</button></div><div class="mb"><div id="fd"></div></div></dialog></div>
+  <div class="c"><button type="button" class="tile" data-d="dK"><h2>العدد الكلي</h2><span class="tot"><small>إجمالي الأجانب</small><b id="ft1">0</b></span><span class="op" aria-hidden="true">فتح <b>⤢</b></span></button><dialog id="dK" aria-labelledby="tK"><div class="mh"><h2 id="tK">العدد الكلي</h2><button type="button" class="x" data-x aria-label="إغلاق">✕</button></div><div class="mb"><button type="button" id="xl" class="xl" hidden>⬇ تصدير ملف Excel احترافي</button><p id="xs" class="note" role="status"></p><div id="fd"></div></div></dialog></div>
   <div class="c"><button type="button" class="tile" data-d="dW"><h2>عدد الأفواج حسب المديرية</h2><span class="op" aria-hidden="true">فتح <b>⤢</b></span></button><dialog id="dW" aria-labelledby="tW"><div class="mh"><h2 id="tW">عدد الأفواج حسب المديرية</h2><button type="button" class="x" data-x aria-label="إغلاق">✕</button></div><div class="mb"><div id="w"></div></div></dialog></div>
   <div class="c"><button type="button" class="tile" data-d="dT"><h2>نوع المؤسسة</h2><span class="op" aria-hidden="true">فتح <b>⤢</b></span></button><dialog id="dT" aria-labelledby="tT"><div class="mh"><h2 id="tT">نوع المؤسسة</h2><button type="button" class="x" data-x aria-label="إغلاق">✕</button></div><div class="mb">
     <div class="dn"><svg id="d" width="170" height="170" viewBox="0 0 42 42" role="img" aria-label="توزيع المؤسسات"></svg><div class="lg" id="lg"></div></div>
@@ -268,6 +274,166 @@ try{if(sessionStorage.getItem("ok1")===H)ok()}catch(e){}
 function hx(s){var b=new TextEncoder().encode(s);return crypto.subtle.digest("SHA-256",b).then(function(d){return Array.prototype.map.call(new Uint8Array(d),function(x){return ("0"+x.toString(16)).slice(-2)}).join("")})}
 function chk(){hx($("pw").value).then(function(h){if(h===H)ok();else{$("er").textContent="كلمة المرور غير صحيحة";$("pw").value=""}})}
 $("go").onclick=chk;$("pw").onkeydown=function(e){if(e.key==="Enter")chk()};
+})();
+(function(){
+var b=$("xl"),st=$("xs"),dl=null;
+if(!b||!window.ExcelJS||!window.claude||!claude.use)return;
+claude.use("downloads").then(function(d){if(d){dl=d;b.hidden=false}}).catch(function(){});
+function n(v){return +v||0}
+var NAVY="FF1F3864",BLUE="FF2F5597",LIGHT="FFD9E2F3",BAND="FFF2F6FC",WHITE="FFFFFFFF",GREY="FF595959",GOLD="FFFFF2CC";
+var thin={style:"thin",color:{argb:"FFBFC9D9"}},BR={top:thin,left:thin,bottom:thin,right:thin};
+function fill(c){return{type:"pattern",pattern:"solid",fgColor:{argb:c}}}
+function titleRows(ws,txt,sub,cols){
+  ws.mergeCells(1,1,1,cols);var c=ws.getCell(1,1);c.value=txt;
+  c.font={name:"Arial",size:16,bold:true,color:{argb:WHITE}};c.fill=fill(NAVY);
+  c.alignment={horizontal:"center",vertical:"middle",readingOrder:"rtl"};ws.getRow(1).height=36;
+  ws.mergeCells(2,1,2,cols);var s=ws.getCell(2,1);s.value=sub;
+  s.font={name:"Arial",size:10,italic:true,color:{argb:GREY}};s.fill=fill(LIGHT);
+  s.alignment={horizontal:"center",vertical:"middle",readingOrder:"rtl"};ws.getRow(2).height=20;
+  ws.getRow(3).height=8;
+}
+function head(ws,row,labels){
+  var r=ws.getRow(row);
+  labels.forEach(function(t,i){var c=r.getCell(i+1);c.value=t;
+    c.font={name:"Arial",size:11,bold:true,color:{argb:WHITE}};c.fill=fill(BLUE);c.border=BR;
+    c.alignment={horizontal:"center",vertical:"middle",wrapText:true,readingOrder:"rtl"}});
+  r.height=30;
+}
+function cell(c,center,bold,bg){
+  c.font={name:"Arial",size:10,bold:!!bold};c.border=BR;
+  c.alignment={horizontal:center?"center":"right",vertical:"middle",wrapText:true,readingOrder:"rtl"};
+  if(bg)c.fill=fill(bg);
+}
+function setup(ws,hdr,cols,widths){
+  widths.forEach(function(w,i){ws.getColumn(i+1).width=w});
+  ws.views=[{rightToLeft:true,state:"frozen",ySplit:hdr,showGridLines:false}];
+  ws.pageSetup={paperSize:9,orientation:"landscape",fitToPage:true,fitToWidth:1,fitToHeight:0,horizontalCentered:true,printTitlesRow:hdr+":"+hdr,
+    margins:{left:.4,right:.4,top:.6,bottom:.6,header:.3,footer:.3}};
+  ws.headerFooter={oddFooter:"&C&9&P / &N"};
+}
+function totalRow(ws,row,cols,label,spanTo,vals){
+  ws.mergeCells(row,1,row,spanTo);
+  var c=ws.getCell(row,1);c.value=label;
+  c.font={name:"Arial",size:11,bold:true,color:{argb:WHITE}};c.fill=fill(NAVY);c.border=BR;
+  c.alignment={horizontal:"center",vertical:"middle",readingOrder:"rtl"};
+  vals.forEach(function(v,i){var x=ws.getCell(row,spanTo+1+i);x.value=v.f?{formula:v.f,result:v.r}:v.r;
+    x.font={name:"Arial",size:11,bold:true,color:{argb:WHITE}};x.fill=fill(NAVY);x.border=BR;
+    x.alignment={horizontal:"center",vertical:"middle"};if(v.fmt)x.numFmt=v.fmt});
+  ws.getRow(row).height=26;
+}
+function aggregate(){
+  var W={};
+  D.forEach(function(r){
+    var w=W[r[1]]=W[r[1]]||{no:r[0],g:0,f:0,e:0,i:{},k:[]};
+    w.g+=r[4]?1:0;w.f+=n(r[6]);w.e+=n(r[7]);
+    if(r[2]){var x=w.i[r[2]];
+      if(!x){x=w.i[r[2]]={n:r[3],g:0,f:0,e:0};w.k.push(r[2])}
+      x.g+=r[4]?1:0;x.f+=n(r[6]);x.e+=n(r[7])}
+  });
+  return W;
+}
+function pad(v){return v<10?"0"+v:""+v}
+function build(){
+  var W=aggregate(),wb=new ExcelJS.Workbook();
+  wb.creator="لوحة إحصائيات الأجانب بلد النيجر";wb.created=new Date();
+  var now=new Date(),ds=pad(now.getDate())+"/"+pad(now.getMonth()+1)+"/"+now.getFullYear();
+  var sub="تاريخ التصدير: "+ds+"  |  المصدر: لوحة إحصائيات الأجانب بلد النيجر";
+  var T={i:0,g:0,f:0,e:0};
+  order.forEach(function(wn){var w=W[wn];T.i+=w.k.length;T.g+=w.g;T.f+=w.f;T.e+=w.e});
+
+  /* ---------- الورقة 1: ملخص الولايات ---------- */
+  var s1=wb.addWorksheet("ملخص الولايات",{properties:{tabColor:{argb:NAVY}}});
+  titleRows(s1,"ملخص الأجانب حسب الولاية والمؤسسات",sub,8);
+  head(s1,4,["رقم الولاية","الولاية","المؤسسات (الاسم والرمز)","عدد المؤسسات","عدد الأفواج","عدد الأجانب","منهم إناث","نسبة الإناث"]);
+  var r0=5;
+  order.forEach(function(wn,idx){
+    var w=W[wn],row=r0+idx,bg=idx%2?BAND:null,R=s1.getRow(row);
+    var names=w.k.length?w.k.map(function(c){return w.i[c].n+" ("+c+")"}).join("\n"):"لا توجد مؤسسة مسجلة";
+    R.getCell(1).value=w.no;R.getCell(2).value=wn;R.getCell(3).value=names;
+    R.getCell(4).value=w.k.length;R.getCell(5).value=w.g;R.getCell(6).value=w.f;R.getCell(7).value=w.e;
+    R.getCell(8).value={formula:"IFERROR(G"+row+"/F"+row+",0)",result:w.f?w.e/w.f:0};
+    for(var c=1;c<=8;c++)cell(R.getCell(c),c!==3,c===2,bg);
+    R.getCell(8).numFmt="0.0%";
+    if(!w.k.length)R.getCell(3).font={name:"Arial",size:10,italic:true,color:{argb:GREY}};
+    R.height=Math.max(24,(w.k.length||1)*17+6);
+  });
+  var last1=r0+order.length-1,tr=last1+1;
+  totalRow(s1,tr,8,"الإجمالي العام",3,[
+    {f:"SUM(D"+r0+":D"+last1+")",r:T.i},{f:"SUM(E"+r0+":E"+last1+")",r:T.g},
+    {f:"SUM(F"+r0+":F"+last1+")",r:T.f},{f:"SUM(G"+r0+":G"+last1+")",r:T.e},
+    {f:"IFERROR(G"+tr+"/F"+tr+",0)",r:T.f?T.e/T.f:0,fmt:"0.0%"}]);
+  setup(s1,4,8,[12,18,62,14,13,14,12,13]);
+  s1.autoFilter={from:{row:4,column:1},to:{row:last1,column:8}};
+
+  /* ---------- الورقة 2: الولايات ومؤسساتها ---------- */
+  var s2=wb.addWorksheet("الولايات والمؤسسات",{properties:{tabColor:{argb:BLUE},outlineProperties:{summaryBelow:false}}});
+  titleRows(s2,"كل ولاية ومؤسساتها وعدد الأجانب والإناث",sub,7);
+  head(s2,4,["رقم","رمز المؤسسة","اسم المؤسسة","النوع","عدد الأفواج","عدد الأجانب","منهم إناث"]);
+  var row=5,hdrRows=[];
+  order.forEach(function(wn){
+    var w=W[wn],cnt=Math.max(1,w.k.length),h=row,first=h+1,lastR=h+cnt;
+    hdrRows.push(h);
+    s2.mergeCells(h,1,h,4);
+    var hc=s2.getCell(h,1);hc.value="الولاية: "+wn+"  (رقم "+pad(w.no)+")";
+    hc.font={name:"Arial",size:11,bold:true,color:{argb:NAVY}};hc.fill=fill(LIGHT);hc.border=BR;
+    hc.alignment={horizontal:"right",vertical:"middle",readingOrder:"rtl",indent:1};
+    [[5,"E",w.g],[6,"F",w.f],[7,"G",w.e]].forEach(function(p){
+      var c=s2.getCell(h,p[0]);c.value={formula:"SUBTOTAL(9,"+p[1]+first+":"+p[1]+lastR+")",result:p[2]};
+      c.font={name:"Arial",size:11,bold:true,color:{argb:NAVY}};c.fill=fill(LIGHT);c.border=BR;
+      c.alignment={horizontal:"center",vertical:"middle"}});
+    s2.getRow(h).height=24;
+    if(w.k.length){
+      w.k.forEach(function(c,i){
+        var x=w.i[c],R=s2.getRow(first+i),bg=i%2?BAND:null;
+        R.getCell(1).value=i+1;R.getCell(2).value=c;R.getCell(3).value=x.n;
+        R.getCell(4).value=x.n.indexOf("المعهد")===0?"معهد":"مركز";
+        R.getCell(5).value=x.g;R.getCell(6).value=x.f;R.getCell(7).value=x.e;
+        for(var k=1;k<=7;k++)cell(R.getCell(k),k!==3,false,bg);
+        R.outlineLevel=1;R.height=Math.max(22,Math.ceil(x.n.length/58)*16+6);
+      });
+    }else{
+      var R=s2.getRow(first);
+      R.getCell(1).value="—";R.getCell(2).value="—";R.getCell(3).value="لا توجد مؤسسة مسجلة";R.getCell(4).value="—";
+      R.getCell(5).value=0;R.getCell(6).value=0;R.getCell(7).value=0;
+      for(var k2=1;k2<=7;k2++)cell(R.getCell(k2),k2!==3,false,null);
+      R.getCell(3).font={name:"Arial",size:10,italic:true,color:{argb:GREY}};
+      R.outlineLevel=1;R.height=22;
+    }
+    row=lastR+1;
+  });
+  var lastRow2=row-1;
+  totalRow(s2,row,7,"الإجمالي العام",4,[
+    {f:"SUBTOTAL(9,E5:E"+lastRow2+")",r:T.g},{f:"SUBTOTAL(9,F5:F"+lastRow2+")",r:T.f},{f:"SUBTOTAL(9,G5:G"+lastRow2+")",r:T.e}]);
+  setup(s2,4,7,[9,14,62,10,13,14,12]);
+
+  /* ---------- الورقة 3: التفاصيل ---------- */
+  var s3=wb.addWorksheet("التفاصيل",{properties:{tabColor:{argb:"FF12A37F"}}});
+  titleRows(s3,"الجدول التفصيلي للأفواج والتخصصات",sub,8);
+  head(s3,4,["رقم الولاية","الولاية","رمز المؤسسة","المؤسسة","التخصص","الفوج","عدد الأجانب","منهم إناث"]);
+  D.forEach(function(r,i){
+    var R=s3.getRow(5+i),bg=i%2?BAND:null;
+    R.getCell(1).value=r[0];R.getCell(2).value=r[1];R.getCell(3).value=r[2]||"—";R.getCell(4).value=r[3]||"—";
+    R.getCell(5).value=r[4]||"—";R.getCell(6).value=r[5]||"—";R.getCell(7).value=n(r[6]);R.getCell(8).value=n(r[7]);
+    for(var c=1;c<=8;c++)cell(R.getCell(c),c!==4&&c!==5,c===2,bg);
+    R.height=Math.max(24,Math.ceil(Math.max((r[3]||"").length/38,(r[4]||"").length/34))*16+6);
+  });
+  var l3=4+D.length;
+  totalRow(s3,l3+1,8,"الإجمالي",6,[{f:"SUBTOTAL(9,G5:G"+l3+")",r:T.f},{f:"SUBTOTAL(9,H5:H"+l3+")",r:T.e}]);
+  setup(s3,4,8,[12,16,12,46,42,9,13,11]);
+  s3.autoFilter={from:{row:4,column:1},to:{row:l3,column:8}};
+  return wb;
+}
+b.onclick=function(){
+  if(!dl)return;
+  b.disabled=true;st.textContent="جارٍ إعداد الملف…";
+  var wb;
+  try{wb=build()}catch(e){st.textContent="تعذّر إنشاء الملف.";b.disabled=false;return}
+  wb.xlsx.writeBuffer().then(function(buf){
+    return dl.save({filename:"إحصائيات_الأجانب_حسب_الولاية_والمؤسسات.xlsx",data:buf});
+  }).then(function(){st.textContent="تم حفظ الملف ✓"}).catch(function(e){
+    st.textContent=e&&e.code==="declined"?"تم إلغاء الحفظ.":"تعذّر حفظ الملف في هذا العرض.";
+  }).then(function(){b.disabled=false});
+};
 })();
 </script>
 </body>
