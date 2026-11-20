@@ -145,10 +145,7 @@ body.lk #lg0{display:flex}
 .xl[hidden]{display:none}.xl:disabled{opacity:.6;cursor:wait}
 .xl:focus-visible{outline:2px solid var(--ac);outline-offset:3px}
 #xs{margin:4px 0 12px;min-height:1.2em}
-.hd{order:-3;display:flex;justify-content:space-between;align-items:flex-start;gap:12px 24px;flex-wrap:wrap;margin-bottom:24px}
-.hd .ht{min-width:0}
-.hd .sub{margin-bottom:0}
-.cr{font-size:.88rem;color:var(--mu);line-height:1.9;text-align:left;padding-top:6px}
+.cr{order:99;margin-top:8px;padding-top:14px;border-top:1px solid var(--bd);font-size:.88rem;color:var(--mu);line-height:1.9;text-align:left}
 .ln{position:relative;height:1px;background:var(--bd);margin:0 0 24px}
 .ln::after{content:"";position:absolute;inset-inline-start:0;top:-1px;width:84px;height:3px;border-radius:3px;background:linear-gradient(90deg,var(--ac),var(--ac2))}
 </style>
@@ -156,10 +153,8 @@ body.lk #lg0{display:flex}
 <body class="lk">
 <div id="lg0"><div class="c"><div style="font-size:2rem">🔒</div><h2 style="margin:6px 0 0">الولوج إلى اللوحة</h2><div class="sub" style="margin:4px 0 0">أدخل كلمة المرور</div><input type="password" id="pw" autocomplete="off" placeholder="••••••••"><button id="go" type="button">دخول</button><p id="er"></p></div></div>
 <div class="w">
-<div class="hd"><div class="ht">
 <h1>لوحة إحصائيات الأجانب بلد النيجر<span lang="en" dir="ltr" style="display:block;font-size:1.05rem;font-weight:500;color:var(--mu);margin-top:4px;text-align:right">Foreigners Statistics Dashboard – Niger</span></h1>
-<p class="sub">تحليل الأفواج والمؤسسات والتخصصات حسب الولاية</p></div>
-<div class="cr"><div>يتم تطوير الصفحة من طرف: مهدي</div><div>تتم الطباعة من طرف: مهدي</div></div></div>
+<p class="sub">تحليل الأفواج والمؤسسات والتخصصات حسب الولاية</p>
 
 <h2 class="sec">إحصائيات عامة</h2>
 <div class="k" id="k"></div>
@@ -184,6 +179,7 @@ body.lk #lg0{display:flex}
 <div class="f"><label for="s">اختر المديرية:</label><select id="s"></select><span id="cnt"></span></div>
 <div class="tw"><table><thead><tr><th>رقم</th><th>المديرية</th><th>الرمز</th><th>المؤسسة</th><th>التخصص</th><th>الفوج</th><th>عدد الأجانب</th><th>منهم إناث</th><th>تمت الطباعة</th></tr></thead><tbody id="t"></tbody></table></div>
 </div>
+<footer class="cr"><div>يتم تطوير الصفحة من طرف: مهدي</div><div>تتم الطباعة من طرف: مهدي</div></footer>
 </div>
 
 <script>
