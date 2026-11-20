@@ -57,6 +57,21 @@ body.lk .w{display:none}
 .chev::before{content:"";width:7px;height:7px;border:solid var(--ac);border-width:0 2px 2px 0;transform:rotate(45deg);margin-top:-3px;transition:transform .2s,margin .2s}
 .cd[open] .chev::before{transform:rotate(225deg);margin-top:3px}
 .cd summary:hover .chev{border-color:var(--ac)}
+.tile{all:unset;box-sizing:border-box;display:flex;align-items:center;justify-content:space-between;gap:10px;width:100%;cursor:pointer;border-radius:10px}
+.tile:focus-visible{outline:2px solid var(--ac);outline-offset:4px}
+.tile h2{margin:0}.tile .hint{color:var(--mu);font-size:.8rem}
+.op{flex:none;width:30px;height:30px;border-radius:50%;background:var(--bg);border:1px solid var(--bd);display:grid;place-items:center;color:var(--ac);font-size:1rem;transition:border-color .15s,transform .15s}
+.tile:hover .op{border-color:var(--ac);transform:scale(1.08)}
+.c:has(.tile){transition:border-color .15s,box-shadow .15s}.c:has(.tile):hover{border-color:var(--ac);box-shadow:0 4px 18px rgba(31,111,235,.12)}
+dialog{border:1px solid var(--bd);border-radius:16px;padding:0;background:var(--card);color:var(--tx);width:min(560px,calc(100% - 24px));max-height:calc(100vh - 48px);box-shadow:0 24px 64px rgba(0,0,0,.35);font-family:inherit;overflow:auto}
+dialog::backdrop{background:rgba(10,15,25,.55);backdrop-filter:blur(3px)}
+dialog[open]{animation:pop .18s ease-out}
+@keyframes pop{from{opacity:0;transform:translateY(12px) scale(.97)}}
+.mh{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:14px 18px;border-bottom:1px solid var(--bd);position:sticky;top:0;background:var(--card);z-index:1}
+.mh h2{margin:0}.mb{padding:18px}
+.x{font:inherit;width:32px;height:32px;border-radius:50%;border:1px solid var(--bd);background:var(--bg);color:var(--tx);cursor:pointer}
+.x:hover{border-color:var(--ac);color:var(--ac)}
+body:has(dialog[open]){overflow:hidden}
 #lg0{display:none;min-height:100vh;align-items:center;justify-content:center;padding:16px}
 body.lk #lg0{display:flex}
 #lg0 .c{width:100%;max-width:360px;text-align:center}
@@ -76,10 +91,10 @@ body.lk #lg0{display:flex}
 <div class="c" id="pr" style="margin-bottom:20px"></div>
 
 <div class="g">
-  <div class="c"><details class="cd"><summary><div><h2>عدد الأفواج حسب المديرية</h2><div class="hint">اضغط للعرض</div></div><span class="chev"></span></summary><div id="w"></div></details></div>
-  <div class="c"><details class="cd"><summary><div><h2>نوع المؤسسة</h2><div class="hint">اضغط للعرض</div></div><span class="chev"></span></summary>
+  <div class="c"><button type="button" class="tile" data-d="dW"><div><h2>عدد الأفواج حسب المديرية</h2><div class="hint">اضغط لفتح النافذة</div></div><span class="op" aria-hidden="true">⤢</span></button><dialog id="dW" aria-labelledby="tW"><div class="mh"><h2 id="tW">عدد الأفواج حسب المديرية</h2><button type="button" class="x" data-x aria-label="إغلاق">✕</button></div><div class="mb"><div id="w"></div></div></dialog></div>
+  <div class="c"><button type="button" class="tile" data-d="dT"><div><h2>نوع المؤسسة</h2><div class="hint">اضغط لفتح النافذة</div></div><span class="op" aria-hidden="true">⤢</span></button><dialog id="dT" aria-labelledby="tT"><div class="mh"><h2 id="tT">نوع المؤسسة</h2><button type="button" class="x" data-x aria-label="إغلاق">✕</button></div><div class="mb">
     <div class="dn"><svg id="d" width="170" height="170" viewBox="0 0 42 42" role="img" aria-label="توزيع المؤسسات"></svg><div class="lg" id="lg"></div></div>
-    <p class="note">يُحتسب كل رمز مؤسسة مرة واحدة.</p></details>
+    <p class="note">يُحتسب كل رمز مؤسسة مرة واحدة.</p></div></dialog>
   </div>
 </div>
 
@@ -150,6 +165,10 @@ function rt(sel){var L=D.filter(function(r){return !sel||r[1]===sel});var g=0,m=
 $("s").innerHTML='<option value="">كل المديريات</option>'+order.map(function(w){return '<option>'+w+'</option>'}).join("");
 $("s").onchange=function(){rt(this.value)};
 rt("");
+(function(){var t=document.querySelectorAll(".tile"),x=document.querySelectorAll("[data-x]"),d=document.querySelectorAll("dialog"),i;
+for(i=0;i<t.length;i++)t[i].onclick=function(){var m=$(this.dataset.d);if(m.showModal)m.showModal();else m.setAttribute("open","")};
+for(i=0;i<x.length;i++)x[i].onclick=function(){this.closest("dialog").close()};
+for(i=0;i<d.length;i++)d[i].addEventListener("click",function(e){if(e.target===this)this.close()})})();
 function bindCb(){var c=document.querySelectorAll(".cb");for(var i=0;i<c.length;i++)c[i].onchange=function(){if(this.checked)P[this.dataset.i]=1;else delete P[this.dataset.i];try{localStorage.setItem("pr1",JSON.stringify(P))}catch(e){}pst()}}
 function pst(){var T=0,Q=0,W={};D.forEach(function(r,i){if(!r[4])return;T++;var o=W[r[1]]=W[r[1]]||[0,0,{}];o[1]++;var n=o[2][r[2]]=o[2][r[2]]||[0,0,r[3]];n[1]++;if(P[i]){Q++;o[0]++;n[0]++}});var pc=T?Math.round(Q/T*100):0;
 var h='<h2>إحصائيات الطباعة</h2><div class="k" style="margin-bottom:12px"><div class="c"><div class="n" style="color:var(--ac2)">'+Q+'</div><div class="l">تمت الطباعة</div></div><div class="c"><div class="n" style="color:#d9534f">'+(T-Q)+'</div><div class="l">لم تتم الطباعة</div></div><div class="c"><div class="n">'+pc+'%</div><div class="l">نسبة الإنجاز من '+T+'</div></div></div><div class="b t" style="margin-bottom:14px"><i style="width:'+pc+'%"></i></div>';
