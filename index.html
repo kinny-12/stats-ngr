@@ -13,7 +13,7 @@
 html{scroll-padding-top:env(safe-area-inset-top,0px)}
 body{margin:0;background:var(--bg);color:var(--tx);font-family:Tajawal,"Segoe UI",Tahoma,Arial,sans-serif;line-height:1.6}
 .w{max-width:1100px;margin:auto;padding:24px 16px 48px;display:flex;flex-direction:column;min-width:0}
-h1{order:-3}.sub{order:-2}#tb{order:-1;margin-bottom:20px;min-width:0}
+h1{order:-3}.sub{order:-2}#tb{order:0;margin-bottom:20px;min-width:0}
 h1{font-size:1.7rem;margin:0}
 .sub{color:var(--mu);margin:4px 0 24px}
 .k{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:20px}
@@ -47,6 +47,16 @@ body.lk .w{display:none}
 #pr summary:hover{border-color:var(--ac)}
 #pr .in{padding:2px 22px 8px 0;border-right:2px solid var(--bd);margin:0 6px 8px 0}
 #pr .in .r{font-size:.88rem;margin:6px 0}
+.g{align-items:start}
+.cd summary{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:10px}
+.cd summary::-webkit-details-marker{display:none}
+.cd summary h2{margin:0}
+.cd .hint{color:var(--mu);font-size:.8rem}
+.cd[open] summary{margin-bottom:14px}
+.chev{flex:none;width:30px;height:30px;border-radius:50%;background:var(--bg);border:1px solid var(--bd);display:grid;place-items:center;transition:border-color .15s}
+.chev::before{content:"";width:7px;height:7px;border:solid var(--ac);border-width:0 2px 2px 0;transform:rotate(45deg);margin-top:-3px;transition:transform .2s,margin .2s}
+.cd[open] .chev::before{transform:rotate(225deg);margin-top:3px}
+.cd summary:hover .chev{border-color:var(--ac)}
 #lg0{display:none;min-height:100vh;align-items:center;justify-content:center;padding:16px}
 body.lk #lg0{display:flex}
 #lg0 .c{width:100%;max-width:360px;text-align:center}
@@ -66,14 +76,14 @@ body.lk #lg0{display:flex}
 <div class="c" id="pr" style="margin-bottom:20px"></div>
 
 <div class="g">
-  <div class="c"><h2>عدد الأفواج حسب المديرية</h2><div id="w"></div></div>
-  <div class="c"><h2>نوع المؤسسة</h2>
+  <div class="c"><details class="cd"><summary><div><h2>عدد الأفواج حسب المديرية</h2><div class="hint">اضغط للعرض</div></div><span class="chev"></span></summary><div id="w"></div></details></div>
+  <div class="c"><details class="cd"><summary><div><h2>نوع المؤسسة</h2><div class="hint">اضغط للعرض</div></div><span class="chev"></span></summary>
     <div class="dn"><svg id="d" width="170" height="170" viewBox="0 0 42 42" role="img" aria-label="توزيع المؤسسات"></svg><div class="lg" id="lg"></div></div>
-    <p class="note">يُحتسب كل رمز مؤسسة مرة واحدة.</p>
+    <p class="note">يُحتسب كل رمز مؤسسة مرة واحدة.</p></details>
   </div>
 </div>
 
-<div class="c" style="margin-bottom:20px"><h2>عدد الأفواج حسب المؤسسة</h2><div id="i"></div></div>
+<div class="c" style="margin-bottom:20px;order:1"><h2>عدد الأفواج حسب المؤسسة</h2><div id="i"></div></div>
 
 <div class="c" id="tb"><h2>الجدول التفصيلي</h2>
 <div class="f"><label for="s">اختر المديرية:</label><select id="s"></select><span id="cnt"></span></div>
@@ -96,12 +106,13 @@ var D=[
 [31,"وهران","","","",0],
 [35,"بومرداس","3504","المعهد الوطني المتخصص في التكوين المهني الكرمة","أساسيات صناعة الحلويات",1],
 [35,"بومرداس","3504","المعهد الوطني المتخصص في التكوين المهني الكرمة","تحضير الوجبات للطبخ الجماعي",1],
-[35,"بومرداس","3505","مركز التكوين المهني والتمهين سي مصطفى","مركب ومثبت عناصر الستاف",0],
+[35,"بومرداس","3505","مركز التكوين المهني والتمهين سي مصطفى","مركب ومثبت عناصر الستاف",1],
 [39,"الوادي","3966","المعهد الوطني المتخصص في التكوين المهني حساني عبد الكريم","تغذية المشترات",1],
 [39,"الوادي","3966","المعهد الوطني المتخصص في التكوين المهني حساني عبد الكريم","عامل متعدد المهام في الإنتاج النباتي المستدام",1],
 [39,"الوادي","3966","المعهد الوطني المتخصص في التكوين المهني حساني عبد الكريم","تثمين الفواكه و الخضروات المحلية عن طريق التصنيع التقليدي",1],
 [39,"الوادي","3966","المعهد الوطني المتخصص في التكوين المهني حساني عبد الكريم","تنفيذ عمليات تربية الأسماك",1],
-[47,"غرداية","4722","مركز التكوين المهني والتمهين واد نشو","مساعد الكهرباء المعماري",1]
+[47,"غرداية","4722","مركز التكوين المهني والتمهين واد نشو","مساعد الكهرباء المعماري",1],
+[47,"غرداية","4722","مركز التكوين المهني والتمهين واد نشو","عامل في تركيب الألواح الشمسية و الضوئية",1]
 ];
 var $=function(x){return document.getElementById(x)};
 var tot=0,wil={},ins={},sp=0,order=[];
