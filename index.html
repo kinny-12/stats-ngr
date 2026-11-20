@@ -137,6 +137,8 @@ body.lk #lg0{display:flex}
 .xl[hidden]{display:none}.xl:disabled{opacity:.6;cursor:wait}
 .xl:focus-visible{outline:2px solid var(--ac);outline-offset:3px}
 #xs{margin:4px 0 12px;min-height:1.2em}
+.ln{position:relative;height:1px;background:var(--bd);margin:0 0 24px}
+.ln::after{content:"";position:absolute;inset-inline-start:0;top:-1px;width:84px;height:3px;border-radius:3px;background:linear-gradient(90deg,var(--ac),var(--ac2))}
 </style>
 </head>
 <body class="lk">
@@ -147,6 +149,7 @@ body.lk #lg0{display:flex}
 
 <h2 class="sec">إحصائيات عامة</h2>
 <div class="k" id="k"></div>
+<div class="ln" aria-hidden="true"></div>
 <dialog id="dM" aria-labelledby="tM"><div class="mh"><h2 id="tM">عدد المديريات</h2><button type="button" class="x" data-x aria-label="إغلاق">✕</button></div><div class="mb" id="lM"></div></dialog>
 <dialog id="dS" aria-labelledby="tS"><div class="mh"><h2 id="tS">عدد المؤسسات</h2><button type="button" class="x" data-x aria-label="إغلاق">✕</button></div><div class="mb" id="lS"></div></dialog>
 <div class="c" id="pr" style="margin-bottom:20px"></div>
