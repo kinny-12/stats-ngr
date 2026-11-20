@@ -55,6 +55,11 @@ h2{font-size:1.1rem;margin:0 0 14px}
 .pb.out b{inset-inline-start:calc(var(--w) + 10px);color:var(--tx)}
 .pb.zero b{color:#d9534f}
 .pb.big{height:32px;border-radius:16px}.pb.big b{font-size:.95rem}
+.gb{font:inherit;font-size:.82rem;color:var(--ac);background:rgba(31,111,235,.1);border:1px solid transparent;border-radius:999px;padding:1px 12px;cursor:pointer;transition:border-color .15s}
+.gb:hover,.gb:focus-visible{border-color:var(--ac);outline:none}
+.gb::after{content:" \25BE"}.gb[aria-expanded="true"]::after{content:" \25B4"}
+.sb{padding:2px 18px 8px 0;border-right:2px solid var(--bd);margin:0 6px 8px 0}.sb[hidden]{display:none}
+.sb .fr{border-bottom:0;padding:4px 0}
 .ov{margin:14px 0 6px}.ovh{display:flex;align-items:baseline;gap:12px;margin-bottom:8px}.ovh span{font-weight:700}.ovh strong{font-size:1.5rem;color:var(--ac2)}.ovh em{color:var(--mu);font-style:normal;font-size:.9rem;margin-inline-start:auto}
 .b{height:14px;background:var(--bd);border-radius:7px;overflow:hidden}
 .b i{display:block;height:100%;background:var(--ac);border-radius:7px}
@@ -160,13 +165,13 @@ body.lk #lg0{display:flex}
 
 <script>
 var D=[
-[1,"أدرار","0104","المعهد الوطني المتخصص في التكوين المهني بأدرار 1","تركيب وصيانة أجهزة السبليت",1,12,6,"نعم"],
-[1,"أدرار","0117","المعهد الوطني المتخصص في التكوين المهني بأدرار 2","تثمين الفواكه والخضروات المحلية عن طريق التصنيع التقليدي",1,20,5,"نعم"],
-[9,"البليدة","0920","المعهد الوطني المتخصص في صناعة الأغذية الفلاحية","صناعة مواد التجميل الطبيعية",1,50,12,"نعم"],
-[11,"تمنراست","1106","المعهد الوطني المتخصص في التكوين المهني تامنغست","عامل في صيانة التجهيزات المعلوماتية",1,47,8,"نعم"],
-[11,"تمنراست","1106","المعهد الوطني المتخصص في التكوين المهني تامنغست","وكيل مبيعات السفر",1,20,2,"نعم"],
-[11,"تمنراست","1101","مركز التكوين المهني والتمهين تامنغست","ترصيص الأنابيب البلاستيكية",1,10,8,"نعم"],
-[11,"تمنراست","1101","مركز التكوين المهني والتمهين تامنغست","ترصيص الأنابيب البلاستيكية",2,60,14,"نعم"],
+[1,"أدرار","0104","المعهد الوطني المتخصص في التكوين المهني بأدرار 1","تركيب وصيانة أجهزة السبليت",1],
+[1,"أدرار","0117","المعهد الوطني المتخصص في التكوين المهني بأدرار 2","تثمين الفواكه والخضروات المحلية عن طريق التصنيع التقليدي",1],
+[9,"البليدة","0920","المعهد الوطني المتخصص في صناعة الأغذية الفلاحية","صناعة مواد التجميل الطبيعية",1],
+[11,"تمنراست","1106","المعهد الوطني المتخصص في التكوين المهني تامنغست","عامل في صيانة التجهيزات المعلوماتية",1],
+[11,"تمنراست","1106","المعهد الوطني المتخصص في التكوين المهني تامنغست","وكيل مبيعات السفر",1],
+[11,"تمنراست","1101","مركز التكوين المهني والتمهين تامنغست","ترصيص الأنابيب البلاستيكية",1],
+[11,"تمنراست","1101","مركز التكوين المهني والتمهين تامنغست","ترصيص الأنابيب البلاستيكية",2],
 [12,"تبسة","1201","مركز التكوين المهني والتمهين الونزة","عون حفار مناجم",1],
 [16,"الجزائر","1628","المعهد الوطني المتخصص في التكوين المهني برج البحري","محضر و مجمع هياكل معدنية",1],
 [30,"ورقلة","","","",0],
@@ -194,7 +199,7 @@ var codes=Object.keys(ins);
 var inst=codes.filter(function(c){return ins[c].n.indexOf("المعهد")===0}).length;
 var cen=codes.length-inst;
 var act=order.filter(function(w){return wil[w]>0}).length;
-var K=[[order.length,"عدد المديريات"],[codes.length,"عدد المؤسسات"],[tot,"إجمالي الأفواج"],[sp,"سطور بتخصص محدد"],[act,"مديريات بها أفواج"]];
+var K=[[order.length,"عدد المديريات"],[codes.length,"عدد المؤسسات"],[tot,"إجمالي الأفواج"],[act,"مديريات بها أفواج"]];
 $("k").innerHTML=K.map(function(a,i){var o=i==0?"dM":i==1?"dS":"";return '<div class="c kc"'+(o?' data-o="'+o+'" role="button" tabindex="0"':'')+'><div class="n">'+a[0]+'</div><div class="l">'+a[1]+'</div>'+(o?'<span class="op op2" aria-hidden="true">فتح <b>⤢</b></span>':'')+'</div>'}).join("");
 
 function bars(el,rows,cls,max){
@@ -222,9 +227,10 @@ order.forEach(function(w){var o=W[w],k=Object.keys(o.i);H+='<div class="fw"><div
 $("fd").innerHTML=H})();
 (function(){var k=$("k");function op(e){var c=e.target.closest&&e.target.closest(".kc[data-o]");if(c)$(c.dataset.o).showModal()}
 k.addEventListener("click",op);k.addEventListener("keydown",function(e){if(e.key==="Enter"||e.key===" "){e.preventDefault();op(e)}})})();
-(function(){var m={},s={};D.forEach(function(r){var w=m[r[1]]=m[r[1]]||{n:r[0],i:{},g:0};if(r[4])w.g++;if(r[2]){w.i[r[2]]=1;if(!s[r[2]])s[r[2]]={n:r[3],w:r[1],g:0};if(r[4])s[r[2]].g++}});
+(function(){var m={},s={};D.forEach(function(r){var w=m[r[1]]=m[r[1]]||{n:r[0],i:{},g:0};if(r[4])w.g++;if(r[2]){w.i[r[2]]=1;if(!s[r[2]])s[r[2]]={n:r[3],w:r[1],g:0,b:[]};if(r[4]){s[r[2]].g++;s[r[2]].b.push([r[4],r[5]])}}});
 $("lM").innerHTML=order.map(function(w){var o=m[w];return '<div class="fr"><span><b>'+o.n+' · '+w+'</b></span><span>'+Object.keys(o.i).length+' مؤسسة · '+o.g+' فوج</span></div>'}).join("");
-$("lS").innerHTML=Object.keys(s).map(function(c){var o=s[c];return '<div class="fr"><span><b>'+o.n+'</b></span><span>'+c+' · '+o.w+' · '+o.g+' فوج</span></div>'}).join("")})();
+$("lS").innerHTML=Object.keys(s).map(function(c){var o=s[c];return '<div class="si"><div class="fr"><span><b>'+o.n+'</b></span><span>'+c+' · '+o.w+' · <button type="button" class="gb" aria-expanded="false">'+o.g+' فوج</button></span></div><div class="sb" hidden>'+o.b.map(function(x){return '<div class="fr"><span>'+x[0]+'</span><span>الفوج '+x[1]+'</span></div>'}).join("")+'</div></div>'}).join("");
+$("lS").addEventListener("click",function(e){var b=e.target.closest&&e.target.closest(".gb");if(!b)return;var p=b.closest(".si").querySelector(".sb"),o=p.hidden;p.hidden=!o;b.setAttribute("aria-expanded",o)})})();
 (function(){var h=document.documentElement,b=$("th"),i=$("ti"),k="th1",s=null;
 function cur(){var a=h.getAttribute("data-theme");if(a)return a;return matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"}
 function ap(m){h.setAttribute("data-theme",m);i.textContent=m==="dark"?"☀︎":"☾";b.title=m==="dark"?"الوضع الفاتح":"الوضع المظلم"}
