@@ -341,6 +341,21 @@ function build(){
   var T={i:0,g:0,f:0,e:0};
   order.forEach(function(wn){var w=W[wn];T.i+=w.k.length;T.g+=w.g;T.f+=w.f;T.e+=w.e});
 
+  /* ---------- الورقة 3: التفاصيل ---------- */
+  var s3=wb.addWorksheet("التفاصيل",{properties:{tabColor:{argb:"FF12A37F"}}});
+  titleRows(s3,"الجدول التفصيلي للأفواج والتخصصات",sub,8);
+  head(s3,4,["رقم الولاية","الولاية","رمز المؤسسة","المؤسسة","التخصص","الفوج","عدد الأجانب","منهم إناث"]);
+  D.forEach(function(r,i){
+    var R=s3.getRow(5+i),bg=i%2?BAND:null;
+    R.getCell(1).value=r[0];R.getCell(2).value=r[1];R.getCell(3).value=r[2]||"—";R.getCell(4).value=r[3]||"—";
+    R.getCell(5).value=r[4]||"—";R.getCell(6).value=r[5]||"—";R.getCell(7).value=n(r[6]);R.getCell(8).value=n(r[7]);
+    for(var c=1;c<=8;c++)cell(R.getCell(c),c!==4&&c!==5,c===2,bg);
+    R.height=Math.max(24,Math.ceil(Math.max((r[3]||"").length/38,(r[4]||"").length/34))*16+6);
+  });
+  var l3=4+D.length;
+  totalRow(s3,l3+1,8,"الإجمالي",6,[{f:"SUBTOTAL(9,G5:G"+l3+")",r:T.f},{f:"SUBTOTAL(9,H5:H"+l3+")",r:T.e}]);
+  setup(s3,4,8,[12,16,12,46,42,9,13,11]);
+  s3.autoFilter={from:{row:4,column:1},to:{row:l3,column:8}};
   /* ---------- الورقة 1: ملخص الولايات ---------- */
   var s1=wb.addWorksheet("ملخص الولايات",{properties:{tabColor:{argb:NAVY}}});
   titleRows(s1,"ملخص الأجانب حسب الولاية والمؤسسات",sub,8);
@@ -365,62 +380,6 @@ function build(){
   setup(s1,4,8,[12,18,62,14,13,14,12,13]);
   s1.autoFilter={from:{row:4,column:1},to:{row:last1,column:8}};
 
-  /* ---------- الورقة 2: الولايات ومؤسساتها ---------- */
-  var s2=wb.addWorksheet("الولايات والمؤسسات",{properties:{tabColor:{argb:BLUE},outlineProperties:{summaryBelow:false}}});
-  titleRows(s2,"كل ولاية ومؤسساتها وعدد الأجانب والإناث",sub,7);
-  head(s2,4,["رقم","رمز المؤسسة","اسم المؤسسة","النوع","عدد الأفواج","عدد الأجانب","منهم إناث"]);
-  var row=5,hdrRows=[];
-  order.forEach(function(wn){
-    var w=W[wn],cnt=Math.max(1,w.k.length),h=row,first=h+1,lastR=h+cnt;
-    hdrRows.push(h);
-    s2.mergeCells(h,1,h,4);
-    var hc=s2.getCell(h,1);hc.value="الولاية: "+wn+"  (رقم "+pad(w.no)+")";
-    hc.font={name:"Arial",size:11,bold:true,color:{argb:NAVY}};hc.fill=fill(LIGHT);hc.border=BR;
-    hc.alignment={horizontal:"right",vertical:"middle",readingOrder:"rtl",indent:1};
-    [[5,"E",w.g],[6,"F",w.f],[7,"G",w.e]].forEach(function(p){
-      var c=s2.getCell(h,p[0]);c.value={formula:"SUBTOTAL(9,"+p[1]+first+":"+p[1]+lastR+")",result:p[2]};
-      c.font={name:"Arial",size:11,bold:true,color:{argb:NAVY}};c.fill=fill(LIGHT);c.border=BR;
-      c.alignment={horizontal:"center",vertical:"middle"}});
-    s2.getRow(h).height=24;
-    if(w.k.length){
-      w.k.forEach(function(c,i){
-        var x=w.i[c],R=s2.getRow(first+i),bg=i%2?BAND:null;
-        R.getCell(1).value=i+1;R.getCell(2).value=c;R.getCell(3).value=x.n;
-        R.getCell(4).value=x.n.indexOf("المعهد")===0?"معهد":"مركز";
-        R.getCell(5).value=x.g;R.getCell(6).value=x.f;R.getCell(7).value=x.e;
-        for(var k=1;k<=7;k++)cell(R.getCell(k),k!==3,false,bg);
-        R.outlineLevel=1;R.height=Math.max(22,Math.ceil(x.n.length/58)*16+6);
-      });
-    }else{
-      var R=s2.getRow(first);
-      R.getCell(1).value="—";R.getCell(2).value="—";R.getCell(3).value="لا توجد مؤسسة مسجلة";R.getCell(4).value="—";
-      R.getCell(5).value=0;R.getCell(6).value=0;R.getCell(7).value=0;
-      for(var k2=1;k2<=7;k2++)cell(R.getCell(k2),k2!==3,false,null);
-      R.getCell(3).font={name:"Arial",size:10,italic:true,color:{argb:GREY}};
-      R.outlineLevel=1;R.height=22;
-    }
-    row=lastR+1;
-  });
-  var lastRow2=row-1;
-  totalRow(s2,row,7,"الإجمالي العام",4,[
-    {f:"SUBTOTAL(9,E5:E"+lastRow2+")",r:T.g},{f:"SUBTOTAL(9,F5:F"+lastRow2+")",r:T.f},{f:"SUBTOTAL(9,G5:G"+lastRow2+")",r:T.e}]);
-  setup(s2,4,7,[9,14,62,10,13,14,12]);
-
-  /* ---------- الورقة 3: التفاصيل ---------- */
-  var s3=wb.addWorksheet("التفاصيل",{properties:{tabColor:{argb:"FF12A37F"}}});
-  titleRows(s3,"الجدول التفصيلي للأفواج والتخصصات",sub,8);
-  head(s3,4,["رقم الولاية","الولاية","رمز المؤسسة","المؤسسة","التخصص","الفوج","عدد الأجانب","منهم إناث"]);
-  D.forEach(function(r,i){
-    var R=s3.getRow(5+i),bg=i%2?BAND:null;
-    R.getCell(1).value=r[0];R.getCell(2).value=r[1];R.getCell(3).value=r[2]||"—";R.getCell(4).value=r[3]||"—";
-    R.getCell(5).value=r[4]||"—";R.getCell(6).value=r[5]||"—";R.getCell(7).value=n(r[6]);R.getCell(8).value=n(r[7]);
-    for(var c=1;c<=8;c++)cell(R.getCell(c),c!==4&&c!==5,c===2,bg);
-    R.height=Math.max(24,Math.ceil(Math.max((r[3]||"").length/38,(r[4]||"").length/34))*16+6);
-  });
-  var l3=4+D.length;
-  totalRow(s3,l3+1,8,"الإجمالي",6,[{f:"SUBTOTAL(9,G5:G"+l3+")",r:T.f},{f:"SUBTOTAL(9,H5:H"+l3+")",r:T.e}]);
-  setup(s3,4,8,[12,16,12,46,42,9,13,11]);
-  s3.autoFilter={from:{row:4,column:1},to:{row:l3,column:8}};
   return wb;
 }
 b.onclick=function(){
