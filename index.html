@@ -142,6 +142,14 @@ body:has(dialog[open]){overflow:hidden}
 .cr{order:99;margin-top:8px;padding-top:14px;border-top:1px solid var(--bd);font-size:.88rem;color:var(--mu);line-height:1.9;text-align:left}
 .ln{position:relative;height:1px;background:var(--bd);margin:0 0 24px}
 .ln::after{content:"";position:absolute;inset-inline-start:0;top:-1px;width:84px;height:3px;border-radius:3px;background:linear-gradient(90deg,var(--ac),var(--ac2))}
+.nt{color:#d9534f;font-weight:700;font-size:.82rem;min-width:150px}
+#pr .br .nt2{grid-column:1/-1;color:#d9534f;font-size:.8rem;font-weight:700}
+@keyframes bl{0%,100%{opacity:1}50%{opacity:.2}}
+.pb.err{animation:bl 1s ease-in-out infinite}
+.pb.err i{background:#d9534f}
+.pb.err.in b{color:#fff}.pb.err.out b{color:#d9534f}
+.n.errn,.ov.err .ovh span,.ov.err .ovh strong{color:#d9534f;animation:bl 1s ease-in-out infinite}
+@media(prefers-reduced-motion:reduce){.pb.err,.n.errn,.ov.err .ovh span,.ov.err .ovh strong{animation:none}}
 </style>
 </head>
 <body>
@@ -170,7 +178,7 @@ body:has(dialog[open]){overflow:hidden}
 
 <div class="c" id="tb"><h2>الجدول التفصيلي</h2>
 <div class="f"><label for="s">اختر المديرية:</label><select id="s"></select><span id="cnt"></span></div>
-<div class="tw"><table><thead><tr><th>رقم</th><th>المديرية</th><th>الرمز</th><th>المؤسسة</th><th>التخصص</th><th>الفوج</th><th>عدد الأجانب</th><th>منهم إناث</th><th>تمت الطباعة</th></tr></thead><tbody id="t"></tbody></table></div>
+<div class="tw"><table><thead><tr><th>رقم</th><th>المديرية</th><th>الرمز</th><th>المؤسسة</th><th>التخصص</th><th>الفوج</th><th>عدد الأجانب</th><th>منهم إناث</th><th>تمت الطباعة</th><th>ملاحظة</th></tr></thead><tbody id="t"></tbody></table></div>
 </div>
 <footer class="cr"><div>يتم تطوير الصفحة من طرف: مهدي</div><div>تتم الطباعة من طرف: مهدي</div></footer>
 </div>
@@ -189,7 +197,7 @@ var D=[
 [30,"ورقلة","3018","مركز التكوين المهني والتمهين الرويسات","ترصيص الأنابيب البلاستيكية",1,5,0,"نعم"],
 [30,"ورقلة","3001","مركز التكوين المهني والتمهين ورقلة 01","لحام أنابيب البترول",1,31,0,"نعم"],
 [30,"ورقلة","3001","مركز التكوين المهني والتمهين ورقلة 01","لحام أنابيب البترول",2,31,0,"نعم"],
-[31,"وهران","3105","المعهد الوطني المتخصص في التكوين المهني السانيا","تشخيص وصيانة أنظمة الميكاترونيك المدمجة",1,24,0,"نعم"],
+[31,"وهران","3105","المعهد الوطني المتخصص في التكوين المهني السانيا","تشخيص وصيانة أنظمة الميكاترونيك المدمجة",1,24,0,"نعم","خطأ في تسمية التخصص يجب إعادة الطباعة"],
 [31,"وهران","3128","المعهد الوطني المتخصص في التكوين المهني بلقايد","تشخيص و اصلاح الأعطال الشائعة في المركبات",1,22,0,"نعم"],
 [35,"بومرداس","3504","المعهد الوطني المتخصص في التكوين المهني الكرمة","أساسيات صناعة الحلويات",1,23,11,"نعم"],
 [35,"بومرداس","3504","المعهد الوطني المتخصص في التكوين المهني الكرمة","تحضير الوجبات للطبخ الجماعي",1,40,38,"نعم"],
@@ -231,7 +239,7 @@ $("d").innerHTML=h;
 $("lg").innerHTML=seg.map(function(s){return '<div><b style="background:'+s[2]+'"></b>'+s[0]+': <strong>'+s[1]+'</strong> ('+Math.round(s[1]/codes.length*100)+'%)</div>'}).join("");
 
 var P={};D.forEach(function(r,i){if(r[8]==="نعم")P[i]=1});
-function rt(sel){var L=D.filter(function(r){return !sel||r[1]===sel});var g=0,m={};L.forEach(function(r){g+=r[4]?1:0;if(r[2])m[r[2]]=1});$("cnt").textContent=L.length+" سطر · "+Object.keys(m).length+" مؤسسة · "+g+" فوج";$("t").innerHTML=L.map(function(r){return '<tr><td>'+r[0]+'</td><td><span class="tag">'+r[1]+'</span></td><td>'+(r[2]||'<span class="z">—</span>')+'</td><td>'+(r[3]||'<span class="z">—</span>')+'</td><td>'+(r[4]||'<span class="z">—</span>')+'</td><td>'+(r[5]||'<span class="z">—</span>')+'</td><td>'+(r[4]?(+r[6]||0):'<span class="z">—</span>')+'</td><td>'+(r[4]?(+r[7]||0):'<span class="z">—</span>')+'</td><td class="pc">'+(r[4]?(P[D.indexOf(r)]?'<span class="st ok">✓ تمت</span>':'<span class="st no">● لم تتم</span>'):'')+'</td></tr>'}).join("");bindCb()}
+function rt(sel){var L=D.filter(function(r){return !sel||r[1]===sel});var g=0,m={};L.forEach(function(r){g+=r[4]?1:0;if(r[2])m[r[2]]=1});$("cnt").textContent=L.length+" سطر · "+Object.keys(m).length+" مؤسسة · "+g+" فوج";$("t").innerHTML=L.map(function(r){return '<tr><td>'+r[0]+'</td><td><span class="tag">'+r[1]+'</span></td><td>'+(r[2]||'<span class="z">—</span>')+'</td><td>'+(r[3]||'<span class="z">—</span>')+'</td><td>'+(r[4]||'<span class="z">—</span>')+'</td><td>'+(r[5]||'<span class="z">—</span>')+'</td><td>'+(r[4]?(+r[6]||0):'<span class="z">—</span>')+'</td><td>'+(r[4]?(+r[7]||0):'<span class="z">—</span>')+'</td><td class="pc">'+(r[4]?(P[D.indexOf(r)]?'<span class="st ok">✓ تمت</span>':'<span class="st no">● لم تتم</span>'):'')+'</td><td class="nt">'+(r[9]||'')+'</td></tr>'}).join("");bindCb()}
 $("s").innerHTML='<option value="">كل المديريات</option>'+order.map(function(w){return '<option>'+w+'</option>'}).join("");
 $("s").onchange=function(){rt(this.value)};
 rt("");
@@ -273,14 +281,14 @@ for(i=0;i<d.length;i++)d[i].addEventListener("click",function(e){if(e.target===t
 function bindCb(){var c=document.querySelectorAll(".cb");for(var i=0;i<c.length;i++)c[i].onchange=function(){if(this.checked)P[this.dataset.i]=1;else delete P[this.dataset.i];try{localStorage.setItem("pr1",JSON.stringify(P))}catch(e){}pst()}}
 function lst(m){var k=Object.keys(m);if(!k.length)return '<div class="fr z"><span>لا توجد فروع</span></div>';return k.map(function(w){var cs=m[w],cn=Object.keys(cs),c=0;cn.forEach(function(x){c+=cs[x].s.length});return '<div class="fw"><div class="fh"><b>'+w+'</b><span>'+c+' فرع</span></div>'+cn.map(function(x){var o=cs[x];return '<div class="fr"><span><b>'+o.n+' ('+x+')</b></span><span>'+o.s.length+' فرع</span></div>'+o.s.map(function(s){return '<div class="fr" style="padding-inline-start:18px"><span>'+s+'</span></div>'}).join("")}).join("")+'</div>'}).join("")}
 function bd(r){var t=r.querySelectorAll(".tile"),x=r.querySelectorAll("[data-x]"),d=r.querySelectorAll("dialog"),i;for(i=0;i<t.length;i++)t[i].onclick=function(){$(this.dataset.d).showModal()};for(i=0;i<x.length;i++)x[i].onclick=function(){this.closest("dialog").close()};for(i=0;i<d.length;i++)d[i].addEventListener("click",function(e){if(e.target===this)this.close()})}
-function pb(p,big){var c=p>=100?"ok":p>=50?"hi":p>0?"mid":"zero",m=p>=18?"in":"out";return '<div class="pb '+c+' '+m+(big?' big':'')+'" style="--w:'+p+'%" role="progressbar" aria-valuenow="'+p+'" aria-valuemin="0" aria-valuemax="100"><i></i><b>'+p+'%</b></div>'}
+function pb(p,big,er){var c=p>=100?"ok":p>=50?"hi":p>0?"mid":"zero",m=p>=18?"in":"out";return '<div class="pb '+c+' '+m+(big?' big':'')+(er?' err':'')+'" style="--w:'+p+'%" role="progressbar" aria-valuenow="'+p+'" aria-valuemin="0" aria-valuemax="100"><i></i><b>'+p+'%</b></div>'}
 function brn(L){if(!L||!L.length)return '';var F=0,E=0;
   var li=L.map(function(b){F+=+b[2]||0;E+=+b[3]||0;
-    return '<li><span class="bn">'+b[0]+(b[1]>1?'<small>فوج '+b[1]+'</small>':'')+'</span><span class="bf"><b>'+(+b[2]||0)+'</b> أجنبي · <b>'+(+b[3]||0)+'</b> إناث</span>'+(b[4]?'<span class="st ok">✓ تمت</span>':'<span class="st no">● لم تتم</span>')+'</li>'}).join("");
+    return '<li><span class="bn">'+b[0]+(b[1]>1?'<small>فوج '+b[1]+'</small>':'')+'</span><span class="bf"><b>'+(+b[2]||0)+'</b> أجنبي · <b>'+(+b[3]||0)+'</b> إناث</span>'+(b[4]?'<span class="st ok">✓ تمت</span>':'<span class="st no">● لم تتم</span>')+(b[5]?'<span class="nt2">⚠ '+b[5]+'</span>':'')+'</li>'}).join("");
   return '<ul class="br">'+li+(L.length>1?'<li class="bs"><span>المجموع</span><span class="bf"><b>'+F+'</b> أجنبي · <b>'+E+'</b> إناث</span></li>':'')+'</ul>'}
-function pst(){var T=0,Q=0,FT=0,FP=0,W={},B={},X={p:{},n:{}};D.forEach(function(r,i){if(!r[4])return;T++;FT+=+r[6]||0;if(P[i])FP+=+r[6]||0;var o=W[r[1]]=W[r[1]]||[0,0,{}];o[1]++;var n=o[2][r[2]]=o[2][r[2]]||[0,0,r[3]];n[1]++;(B[r[1]]=B[r[1]]||{});(B[r[1]][r[2]]=B[r[1]][r[2]]||[]).push([r[4],r[5],r[6],r[7],!!P[i]]);if(P[i]){Q++;o[0]++;n[0]++}var sx=P[i]?"p":"n",xs=X[sx][r[1]]=X[sx][r[1]]||{};(xs[r[2]]=xs[r[2]]||{n:r[3],s:[]}).s.push(r[4])});var pc=T?Math.round(Q/T*100):0;
-var h='<h2>إحصائيات الطباعة</h2><div class="k" style="margin-bottom:12px"><div class="c"><button type="button" class="tile" data-d="dP"><div><div class="n" style="color:var(--ac2)">'+Q+'<span class="u">فرع</span></div><div class="l">تمت الطباعة</div></div><span class="op" aria-hidden="true">فتح <b>⤢</b></span></button><dialog id="dP" aria-labelledby="tP"><div class="mh"><h2 id="tP">تمت الطباعة</h2><button type="button" class="x" data-x aria-label="إغلاق">✕</button></div><div class="mb">'+lst(X.p)+'</div></dialog></div><div class="c"><button type="button" class="tile" data-d="dN"><div><div class="n" style="color:#d9534f">'+(T-Q)+'<span class="u">فرع</span></div><div class="l">لم تتم الطباعة</div></div><span class="op" aria-hidden="true">فتح <b>⤢</b></span></button><dialog id="dN" aria-labelledby="tN"><div class="mh"><h2 id="tN">لم تتم الطباعة</h2><button type="button" class="x" data-x aria-label="إغلاق">✕</button></div><div class="mb">'+lst(X.n)+'</div></dialog></div><div class="c"><div class="n">'+pc+'%</div><div class="l">نسبة الإنجاز من '+T+' فرع</div></div><div class="c"><div class="n">'+FT+'<span class="u">أجنبي</span></div><div class="l">العدد الكلي للأجانب</div><div class="l" style="margin-top:8px;display:flex;align-items:baseline;gap:6px;flex-wrap:wrap">منهم <b style="color:var(--ac2);font-size:1.15rem">'+FP+'</b> شهادة تمت طباعتها <span>('+(FT?Math.round(FP/FT*100):0)+'%)</span></div></div></div><div class="ov"><div class="ovh"><span>نسبة الإنجاز الكلية</span><strong>'+pc+'%</strong><em>'+Q+' / '+T+' فرع</em></div>'+pb(pc,1)+'</div>';
-h+='<h2 style="margin:18px 0 8px;font-size:1rem">حسب المديرية والمؤسسة</h2><p class="note" style="margin:0 0 10px">ملاحظة: الضغط على المديرية لعرض تفاصيل الطباعة في كل مؤسسة</p>'+Object.keys(W).map(function(w){var a=W[w];return '<details><summary title="اضغط للفتح"><div class="r" style="grid-template-columns:110px 1fr 44px"><span>'+w+'</span>'+pb(Math.round(a[0]/a[1]*100))+'<span>'+a[0]+'/'+a[1]+'</span></div></summary><div class="in">'+Object.keys(a[2]).map(function(c){var n=a[2][c];return '<div class="r" style="grid-template-columns:minmax(140px,300px) 1fr 44px"><span>'+n[2].replace("المعهد الوطني المتخصص في التكوين المهني","معهد").replace("مركز التكوين المهني والتمهين","مركز")+' ('+c+')</span>'+pb(Math.round(n[0]/n[1]*100))+'<span>'+n[0]+'/'+n[1]+'</span></div>'+brn(B[w][c])}).join("")+'</div></details>'}).join("");
+function pst(){var T=0,Q=0,FT=0,FP=0,ER=0,W={},B={},X={p:{},n:{}};D.forEach(function(r,i){if(!r[4])return;T++;FT+=+r[6]||0;if(P[i])FP+=+r[6]||0;var o=W[r[1]]=W[r[1]]||[0,0,{}];o[1]++;var n=o[2][r[2]]=o[2][r[2]]||[0,0,r[3]];n[1]++;if(r[9]){ER++;o.e=1;n.e=1}(B[r[1]]=B[r[1]]||{});(B[r[1]][r[2]]=B[r[1]][r[2]]||[]).push([r[4],r[5],r[6],r[7],!!P[i],r[9]]);if(P[i]){Q++;o[0]++;n[0]++}var sx=P[i]?"p":"n",xs=X[sx][r[1]]=X[sx][r[1]]||{};(xs[r[2]]=xs[r[2]]||{n:r[3],s:[]}).s.push(r[4])});var pc=T?Math.round(Q/T*100):0;
+var h='<h2>إحصائيات الطباعة</h2><div class="k" style="margin-bottom:12px"><div class="c"><button type="button" class="tile" data-d="dP"><div><div class="n" style="color:var(--ac2)">'+Q+'<span class="u">فرع</span></div><div class="l">تمت الطباعة</div></div><span class="op" aria-hidden="true">فتح <b>⤢</b></span></button><dialog id="dP" aria-labelledby="tP"><div class="mh"><h2 id="tP">تمت الطباعة</h2><button type="button" class="x" data-x aria-label="إغلاق">✕</button></div><div class="mb">'+lst(X.p)+'</div></dialog></div><div class="c"><button type="button" class="tile" data-d="dN"><div><div class="n" style="color:#d9534f">'+(T-Q)+'<span class="u">فرع</span></div><div class="l">لم تتم الطباعة</div></div><span class="op" aria-hidden="true">فتح <b>⤢</b></span></button><dialog id="dN" aria-labelledby="tN"><div class="mh"><h2 id="tN">لم تتم الطباعة</h2><button type="button" class="x" data-x aria-label="إغلاق">✕</button></div><div class="mb">'+lst(X.n)+'</div></dialog></div><div class="c"><div class="n'+(ER?' errn':'')+'">'+pc+'%</div><div class="l">نسبة الإنجاز من '+T+' فرع</div></div><div class="c"><div class="n">'+FT+'<span class="u">أجنبي</span></div><div class="l">العدد الكلي للأجانب</div><div class="l" style="margin-top:8px;display:flex;align-items:baseline;gap:6px;flex-wrap:wrap">منهم <b style="color:var(--ac2);font-size:1.15rem">'+FP+'</b> شهادة تمت طباعتها <span>('+(FT?Math.round(FP/FT*100):0)+'%)</span></div></div></div><div class="ov'+(ER?' err':'')+'"><div class="ovh"><span>نسبة الإنجاز الكلية</span><strong>'+pc+'%</strong><em>'+Q+' / '+T+' فرع</em></div>'+pb(pc,1,ER)+(ER?'<p class="nt" style="margin:8px 0 0">⚠ خطأ في الطباعة: '+ER+' فرع يجب إعادة طباعته</p>':'')+'</div>';
+h+='<h2 style="margin:18px 0 8px;font-size:1rem">حسب المديرية والمؤسسة</h2><p class="note" style="margin:0 0 10px">ملاحظة: الضغط على المديرية لعرض تفاصيل الطباعة في كل مؤسسة</p>'+Object.keys(W).map(function(w){var a=W[w];return '<details><summary title="اضغط للفتح"><div class="r" style="grid-template-columns:110px 1fr 44px"><span>'+w+'</span>'+pb(Math.round(a[0]/a[1]*100),0,a.e)+'<span>'+a[0]+'/'+a[1]+'</span></div></summary><div class="in">'+Object.keys(a[2]).map(function(c){var n=a[2][c];return '<div class="r" style="grid-template-columns:minmax(140px,300px) 1fr 44px"><span>'+n[2].replace("المعهد الوطني المتخصص في التكوين المهني","معهد").replace("مركز التكوين المهني والتمهين","مركز")+' ('+c+')</span>'+pb(Math.round(n[0]/n[1]*100),0,n.e)+'<span>'+n[0]+'/'+n[1]+'</span></div>'+brn(B[w][c])}).join("")+'</div></details>'}).join("");
 $("pr").innerHTML=h;bd($("pr"))}
 pst();
 (function(){
@@ -367,19 +375,20 @@ function build(){
 
   /* ---------- الورقة 3: التفاصيل ---------- */
   var s3=wb.addWorksheet("التفاصيل",{properties:{tabColor:{argb:"FF12A37F"}}});
-  titleRows(s3,"الجدول التفصيلي للأفواج والتخصصات",sub,8);
-  head(s3,4,["رقم الولاية","الولاية","رمز المؤسسة","المؤسسة","التخصص","الفوج","عدد الأجانب","منهم إناث"]);
+  titleRows(s3,"الجدول التفصيلي للأفواج والتخصصات",sub,9);
+  head(s3,4,["رقم الولاية","الولاية","رمز المؤسسة","المؤسسة","التخصص","الفوج","عدد الأجانب","منهم إناث","ملاحظة"]);
   D.forEach(function(r,i){
     var R=s3.getRow(5+i),bg=i%2?BAND:null;
     R.getCell(1).value=r[0];R.getCell(2).value=r[1];R.getCell(3).value=r[2]||"—";R.getCell(4).value=r[3]||"—";
-    R.getCell(5).value=r[4]||"—";R.getCell(6).value=r[5]||"—";R.getCell(7).value=n(r[6]);R.getCell(8).value=n(r[7]);
-    for(var c=1;c<=8;c++)cell(R.getCell(c),c!==4&&c!==5,c===2,bg);
+    R.getCell(5).value=r[4]||"—";R.getCell(6).value=r[5]||"—";R.getCell(7).value=n(r[6]);R.getCell(8).value=n(r[7]);R.getCell(9).value=r[9]||"";
+    for(var c=1;c<=9;c++)cell(R.getCell(c),c!==4&&c!==5&&c!==9,c===2,bg);
+    if(r[9])R.getCell(9).font={name:"Arial",size:10,bold:true,color:{argb:"FFC00000"}};
     R.height=Math.max(24,Math.ceil(Math.max((r[3]||"").length/38,(r[4]||"").length/34))*16+6);
   });
   var l3=4+D.length;
-  totalRow(s3,l3+1,8,"الإجمالي",6,[{f:"SUBTOTAL(9,G5:G"+l3+")",r:T.f},{f:"SUBTOTAL(9,H5:H"+l3+")",r:T.e}]);
-  setup(s3,4,8,[12,16,12,46,42,9,13,11]);
-  s3.autoFilter={from:{row:4,column:1},to:{row:l3,column:8}};
+  totalRow(s3,l3+1,9,"الإجمالي",6,[{f:"SUBTOTAL(9,G5:G"+l3+")",r:T.f},{f:"SUBTOTAL(9,H5:H"+l3+")",r:T.e},{r:""}]);
+  setup(s3,4,9,[12,16,12,46,42,9,13,11,36]);
+  s3.autoFilter={from:{row:4,column:1},to:{row:l3,column:9}};
   /* ---------- الورقة 1: ملخص الولايات ---------- */
   var s1=wb.addWorksheet("ملخص الولايات",{properties:{tabColor:{argb:NAVY}}});
   titleRows(s1,"ملخص الأجانب حسب الولاية والمؤسسات",sub,8);
